@@ -6,4 +6,4 @@ Projet python portant sur le jeu Puissance4.
 
 2. Un joueur gagne la partie s'il arrive à aligner un 4 jetons consécutifs (au moins) suivant une ligne horizontale, verticale ou suivant les diagonales.
 
-3.
+3.dc
