@@ -34,4 +34,4 @@ Projet python portant sur le jeu Puissance4.
 
 2. 4 directions au plus doivent être vérifiées pour une victoire. En particulier si la position donnée est au coin (du bas) , il n'y a plus que 3 directions à vérifier.
 
-3. L'algorithme pour vérifier l'alignement de 4 points est :  
+3. L'algorithme pour vérifier l'alignement de 4 points est :   f
