@@ -113,7 +113,170 @@ Fait
 Fait
 
 ##Partie 3
-#Tache 3.1
+#Tache 3.1: 
+1. Analyse des entrées: L'agent reçoit les informations suivantes:
+observation, reward, termination, truncation, info.
 
+    -observation["observation"]:un tableau numpy de taille (6,7,2)
+    -observation["action_mask"]: un tableau où 1 représente les colonnes jouables et 0 les colonnes non jouables(soit pleines).
+    -reward : récompense du dernier coup
+    
+2. Détection des coups valides: 
+Pour déterminer quelles colonnes sont jouables, on va utiliser action_mask. 
+Si action_mask[i] == 1 avec 0 <= i <= 6, alors la colonne concerné est jouable.
 
+3. Pour choisir un coup plusieurs moyens sont possibles. 
+    -On choisit un coup de façon aléatoire parmis les coups légaux
+    -On recherche un coup gagnant immédiat
+    -On vérifie si l'adversaire à un coup gagnant et on le bloque si oui
+    -Si aucun des deux précédents, on peut jouer un coup stratégique.
 
+4. Comme sortie, l'agent doit retourner un "int" qui représente la colonne où il veut jouer.
+
+##Tache 3.2 Conception d'algorithme
+Algoritgme par ordre de complexité:
+1. 
+*Niveau 0 : Agent totalement aléatoire
+Ici l'agent choisit simplement une colonne au hasard, sans vérifier si la colonne est pleine. C’est le comportement le plus basique possible.
+
+* Niveau 1 : Agent aléatoire mais valide
+Ici, l’agent est un peu plus intelligent : il choisit toujours une colonne aléatoire, mais uniquement parmi les colonnes encore jouables. Il évite donc les coups invalides.
+
+* Niveau 2 : Agent opportuniste (attaque immédiate)
+Cet agent vérifie d’abord s’il existe un coup qui lui permet de gagner directement (faire un alignement de 4). Si oui, il joue ce coup. Sinon, il retombe sur un choix aléatoire parmi les coups valides.
+
+* Niveau 3 : Agent défensif
+En plus de chercher à gagner immédiatement, cet agent vérifie si l’adversaire pourrait gagner au prochain tour. Si c’est le cas, il bloque cette colonne en priorité. On a donc deux priorités :
+
+gagner soi-même,
+
+empêcher l’adversaire de gagner.
+
+* Niveau 4 : Agent positionnel / stratégique
+Cet agent utilise des heuristiques plus avancées, comme :
+
+privilégier les colonnes centrales,
+
+construire des "menaces" (alignements de 2 ou 3),
+
+éviter de jouer des coups qui donnent une victoire facile à l’adversaire.
+Il ne regarde plus seulement les coups immédiats, mais réfléchit au placement global.
+
+* Niveau 5+ : Algorithmes avancés
+À ce niveau, on utilise de vrais algorithmes d’intelligence artificielle.
+Ces agents évaluent plusieurs coups à l’avance et se rapprochent du niveau expert.
+
+##Tache 3.3
+Squelette de la classe Agent:
+    class Agent:
+    def __init__(self, name="GenericAgent", level=0):
+        """
+        Initialise l'agent.
+        
+        Parameters:
+        - name : str, nom de l'agent
+        - level : int, niveau de stratégie (0 = aléatoire, 1 = valide, ...)
+        """
+        self.name = name
+        self.level = level
+        self.history = []  # liste des coups joués par cet agent
+        self.last_observation = None  # dernière observation reçue
+        self.last_action = None       # dernier coup joué
+
+    def choose_action(self, observation, action_mask=None):
+        """
+        Méthode principale qui retourne l'action à jouer.
+
+        Parameters:
+        - observation : np.array, l'état du plateau
+        - action_mask : np.array
+
+        Returns:
+        - int : numéro de la colonne choisie
+        """
+        raise NotImplementedError("Cette méthode sera surchargée selon la stratégie.")
+
+    def update_history(self, observation, action):
+        """
+        Met à jour l'historique des coups et observations.
+        """
+        self.last_observation = observation
+        self.last_action = action
+        self.history.append((observation.copy(), action))
+
+    def reset(self):
+        """
+        Réinitialise l'agent entre deux parties.
+        """
+        self.history = []
+        self.last_observation = None
+        self.last_action = None
+
+    def __str__(self):
+        """
+        Affiche des informations sur l'agent.
+        """
+        return f"Agent(name={self.name}, level={self.level})"
+        
+#####################################################################################
+#############TEXTE DE DECOMPOSITION DU PROBLEME-PLAN DE PROGRESSION D'AGENT##########
+#####################################################################################
+1. Décomposition du problème
+
+Analyse des entrées
+    L’agent reçoit à chaque tour une observation de l’environnement, qui contient :
+
+        -La position des jetons du joueur courant (observation[:,:,0])
+
+        -La position des jetons de l’adversaire (observation[:,:,1])
+
+        -Le masque des actions valides (action_mask), indiquant les colonnes jouables
+
+        -D’autres informations  comme reward, termination, truncation.
+
+Détection des coups valides
+    L’agent doit identifier quelles colonnes sont jouables en utilisant l’action_mask fourni par l’environnement.
+    Une colonne est jouable si son masque vaut 1. Les colonnes pleines doivent être exclues.
+
+Sélection du coup
+    L’agent décide quelle colonne jouer en fonction de sa stratégie.
+
+        -Niveau bas : aléatoire parmi les colonnes valides
+
+        -Niveau moyen : chercher un coup gagnant immédiat ou bloquer l’adversaire
+
+        -Niveau avancé : stratégie globale, anticipation des coups, heuristiques etc...
+
+Sortie
+    L’agent retourne l’action choisie sous forme d’un entier correspondant à la colonne (0 à 6).
+
+2. Plan de progression d'agent
+
+Pour passer d’un agent simple à un agent performant:
+
+Niveau 0 – Agent aléatoire
+        Choisit une colonne au hasard sans vérifier si elle est jouable.
+
+Niveau 1 – Agent aléatoire valide
+        Choisit une colonne au hasard mais uniquement parmi les colonnes jouables. Évite les erreurs.
+
+Niveau 2 – Agent opportuniste
+        Vérifie si un coup permet de gagner directement.
+        Si oui: joue ce coup. Sinon: joue aléatoirement parmi les coups valides.
+
+Niveau 3 – Agent défensif
+        Cherche à bloquer l’adversaire en plus de chercher son propre coup gagnant.
+        Priorité : gagner -> bloquer -> coup aléatoire valide.
+
+Niveau 4 – Agent stratégique (heuristiques)
+        Utilise des stratégies:
+
+            -jouer au centre,
+
+            -créer plusieurs menaces,
+
+            -éviter de donner une victoire facile à l’adversaire,
+
+            -maximiser les alignements de 2 ou 3 jetons prometteurs.
+
+Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
