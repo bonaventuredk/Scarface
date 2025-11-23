@@ -1,8 +1,8 @@
 # Flo_Bona
 Projet python portant sur le jeu Puissance4.
-
-#Partie 1:
-
+#############
+#Partie 1:###
+#############
 
 ##Tache 1.1 : Analyse des règles du jeu
 1. Les dimensions d'un tableau de Puissance 4: 6 rangées sur la hauteur et 7 colonnes. Soit 42 emplacements.
@@ -17,20 +17,20 @@ Projet python portant sur le jeu Puissance4.
 
 
 ##Tache 1.2 : Analyse des conditions de victoire
-1. Dessin des 4 motifs:
-        ------------------------------------
-        |  O |  O |  O |  O |    |    |  O |
-        ------------------------------------
-        |    |    |    |    |    |    |  O |
-        ------------------------------------
-        |    |    |    |  O |    |    |  O |
-        ------------------------------------
-        |    |    |  O |    |  O |    |  O |
-        ------------------------------------
-        |    |  O |    |    |    |  O |    |
-        ------------------------------------
-        |  O |    |    |    |    |    |  O |
-        ------------------------------------
+1. Dessin des 4 motifs:\n
+        ------------------------------------\n
+        |  O |  O |  O |  O |    |    |  O |\n
+        ------------------------------------\n
+        |    |    |    |    |    |    |  O |\n
+        ------------------------------------\n
+        |    |    |    |  O |    |    |  O |\n
+        ------------------------------------\n
+        |    |    |  O |    |  O |    |  O |\n
+        ------------------------------------\n
+        |    |  O |    |    |    |  O |    |\n
+        ------------------------------------\n
+        |  O |    |    |    |    |    |  O |\n
+        ------------------------------------\n
 
 2. 4 directions au plus doivent être vérifiées pour une victoire. En particulier si la position donnée est au coin (du bas) , il n'y a plus que 3 directions à vérifier.
 
@@ -218,10 +218,7 @@ Squelette de la classe Agent:
         """
         return f"Agent(name={self.name}, level={self.level})"
         
-#####################################################################################
-#############TEXTE DE DECOMPOSITION DU PROBLEME-PLAN DE PROGRESSION D'AGENT##########
-#####################################################################################
-1. Décomposition du problème
+#TEXTE DE DECOMPOSITION DU PROBLEME-PLAN DE PROGRESSION D'AGENT
 
 Analyse des entrées
     L’agent reçoit à chaque tour une observation de l’environnement, qui contient :
@@ -280,3 +277,64 @@ Niveau 4 – Agent stratégique (heuristiques)
             -maximiser les alignements de 2 ou 3 jetons prometteurs.
 
 Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
+
+#############
+#Exercie 1:### Implémentation d'un agent aléatoire
+#############
+
+#############
+#Partie 1:### Implémentation
+#############
+
+##Tache 2.1: Agent random_agent.py
+##---------
+(Voir fichier random_agent.py)
+
+##Tache 2.2: Suite implémentation
+##---------
+(Voir fichier random_agent.py)
+
+##Tache 2.3 Implémentation alternative
+##---------
+(Voir fichier random_agent.py)
+
+#############
+#Partie 2:### Tester l'argent
+#############
+
+##Tache 2.4: Script de test
+##----------
+(Voir fichier test_random_agent.py)
+
+##Tache 2.5: Exécution le test
+##----------
+1. Le jeu s'exécute sans erreus.
+2. Oui l'agent fait des coups valides.
+3. Le jeu se termine correctement.
+4. Le nombre de coups est moyennement 14.
+
+##Tache 2.6: Tests pour plusieurs parties
+##----------
+
+(Voir fichier test_random_agent.py) 
+
+#############
+#Partie 3:### Analyse
+#############
+
+##Tache 2.7: Analyse statistique
+##----------
+
+(Voir random_agent_analysis.md)
+
+##Tache 2.8: Liste de vérification du code
+##----------
+
+(Voir random_agent_analysis.md)
+
+#############
+#Partie 4:### Extension
+#############
+
+##Tache 2.9: Liste de vérification du code
+##----------
