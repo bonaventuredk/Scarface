@@ -343,11 +343,27 @@ Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 ##Tache 2.8: Liste de vérification du code
 ##----------
 
-(Voir random_agent_analysis.md)
+-
+
+-
+
+-
+
+-
+
+- Non tous les cas limites ont été considérés.
 
 #############
 #Partie 4:### Extension
 #############
 
-##Tache 2.9: Liste de vérification du code
+##Tache 2.9: Aléatoire pondéré
 ##----------
+
+(Voir fichier WeightedRandomAgent.py et TestWeightedRandomAgent.py)
+
+##Tache 2.10: Ajouter des logs
+##----------
+
+(Voir fichier LogWeightedRandomAgent.py et TestLogWeightedRandomAgent.py)
+
