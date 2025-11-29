@@ -343,15 +343,15 @@ Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 ##Tache 2.8: Liste de vérification du code
 ##----------
 
--
+ - Oui l'agent gère correctement le masque d'action. 
 
--
+ - Oui le code à une documentation appropriée.
 
--
-
--
-
-- Non tous les cas limites ont été considérés.
+ - Oui les noms de variables sont clairs et adaptatifs.
+ 
+ - Oui l'agent fonctionne pour le joueur 1 et pour le joueur 2.
+ 
+ - (...)
 
 #############
 #Partie 4:### Extension
@@ -367,3 +367,51 @@ Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 
 (Voir fichier LogWeightedRandomAgent.py et TestLogWeightedRandomAgent.py)
 
+
+
+##Exercice 3: Implémenter un agent basé sur des règles
+##----------
+
+##Partie 1: Planification
+##----------
+
+# Tache 3.1:
+
+(Fait)
+
+# Tache 3.2:
+
+choose_action()
+    ├── get_valid_actions() - Récupère les colonnes jouables
+    ├── check_winning_move() - Vérifie si je peux gagner immédiatement
+    ├── check_blocking_move() - Vérifie si l'adversaire peut gagner au prochain tour
+    ├── check_direct_threat() - Vérifie les menaces directes à créer ou bloquer
+    └── evaluate_position() - Évalue quel coup est stratégiquement le meilleur
+    
+    
+##Partie 2: Implémentation de base
+##----------
+
+(Voir fichier smart_agent.py)
+
+    
+##Partie 3: Tests
+##----------
+
+#Tache 3.5: Tests unitaires
+
+(Voir fichier test_smart_agent.py)
+
+
+#Tache 3.6: Test d'intégration
+
+(Voir fichier test_smart_agent.py)
+
+
+    
+##Partie 4: Tests
+##----------
+
+    
+##Partie 5: Tests
+##----------
