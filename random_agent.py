@@ -51,6 +51,9 @@ class RandomAgent:
 
         This is a learning exercise to understand what action_mask does
         """
+        if action_mask is None:
+            return self.action_space.sample()
+
         # TODO: Get list of valid actions from action_mask
         valid_actions = [i for i, valid in enumerate(action_mask) if valid ==1]  
 
