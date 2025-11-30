@@ -91,107 +91,93 @@ def test_find_winning_move():
 
 # INTEGRATION TESTS (RANDOM VS SMART)
 
-def OneGame_SmartVsRandom(render=False):
+def OneGame():  
     """
-    One game between SmartAgent and RandomAgent.
-    SmartAgent = player_0.
+    Play a single game of Connect Four using two RandomAgent players.
+
+    The function creates the environment, resets it, and lets both agents
+    play until the game ends. It prints each move and the final result.
+
+    Returns:
+        tuple:
+            - winner (str or None): the name of the winning agent
+              ("player_0", "player_1") or None in case of a draw.
+            - NbCoup (int): total number of moves played in the game.
     """
-    env = connect_four_v3.env(render_mode="human" if render else None)
+    env = connect_four_v3.env(render_mode="human") # ou render_mode="rdb_array" ou bien None
     env.reset(seed=42)
 
-    smart_agent = SmartAgent(env)
-    random_agent = RandomAgent(env, player_name="Random")
 
-    assert env.agents == ["player_0", "player_1"]
-
+    assert env.agents == ["player_0", "player_1"] #For after change manually the name of players
+    
     agentdict = {
-        "player_0": smart_agent,
-        "player_1": random_agent
+        "player_0": SmartAgent(env, "player_0"),
+        "player_1": RandomAgent(env, "player_1")
     }
-
     winner = None
-    NbCoup = 0
-
+    NbCoup = 0 # NbCoup: Total number of games
+    
     for agent in env.agent_iter():
         observation, reward, terminated, truncated, info = env.last()
 
         if terminated or truncated:
             action = None
             if reward == 1:
+                print(f"{agent} wins!")
                 winner = agent
-            break
-
-        mask = observation["action_mask"]
-
-        # Sélection action via la bonne classe
-        if agent == "player_0":
-            action = smart_agent.choose_action(
-                observation=observation["observation"],
-                reward=reward,
-                terminated=terminated,
-                truncated=truncated,
-                info=info,
-                action_mask=mask
-            )
+            elif reward == 0:
+                print("It's a draw!")
         else:
-            action = random_agent.choose_action_manual(
-                observation=observation["observation"],
-                reward=reward,
-                terminated=terminated,
-                truncated=truncated,
-                info=info,
-                action_mask=mask
-            )
+            # Take a random valid action
+            mask = observation["action_mask"]
+            
+            action = agentdict[agent].choose_action(observation = observation["observation"], reward = reward, terminated = terminated, truncated = truncated, info = info, action_mask = mask)
+            #action = env.action_space(agent).sample(mask)
+            NbCoup += 1
+            print(f"{agent} plays column {action}")
 
-        NbCoup += 1
         env.step(action)
-
+    
+    #input("Press Enter to close...")
     env.close()
     return winner, NbCoup
 
-def AllGame_SmartVsRandom(num_games=10, render=True):
-    """
-    Joue plusieurs parties SmartAgent vs RandomAgent.
-    SmartAgent = player_0
-    RandomAgent = player_1
-    """
-    RESU = {
-        "Smart_win": 0,
-        "Random_win": 0,
-        "Match_Nul": 0,
-        "rate_Smart": 0,
-        "rate_Random": 0,
-        "rate_Draw": 0,
-        "MinCoup": 0,
-        "MaxCoup": 0,
-        "MeanCoup": 0
-    }
 
-    moves_list = []
+def AllGame_SmartVsRandom(num_games = 10): 
+    """
+    Play multiple games of Connect Four and collect statistics.
 
+    Parameters:
+        num_games (int): number of games to play.
+
+    Returns:
+        dict: a dictionary with:
+            - number of wins for each player,
+            - number of draws,
+            - win rates,
+            - minimum, maximum, and mean number of moves per game and others
+    """
+    RESU = {"player_0": 0, "player_1": 0, "Match_Nul": 0, "rate_0":0,"rate_1":0,"rate_Match_Nul":0, "MinCoup":0, "MaxCoup":0, "MeanCoup":0}
+    liste1 = []
     for i in range(num_games):
-        winner, NbCoup = OneGame_SmartVsRandom(render=render)
-        moves_list.append(NbCoup)
-
+        winner, NbCoup  = OneGame()
+        liste1.append(NbCoup)
         if winner is None:
             RESU["Match_Nul"] += 1
         elif winner == "player_0":
-            RESU["Smart_win"] += 1
+            RESU["player_0"] += 1
         else:
-            RESU["Random_win"] += 1
-
-    # Stats
-    RESU["rate_Smart"] = RESU["Smart_win"] / num_games
-    RESU["rate_Random"] = RESU["Random_win"] / num_games
-    RESU["rate_Draw"] = RESU["Match_Nul"] / num_games
-
-    RESU["MinCoup"] = np.min(moves_list)
-    RESU["MaxCoup"] = np.max(moves_list)
-    RESU["MeanCoup"] = np.mean(moves_list)
-
-    print("\n ====== SMART vs RANDOM RESULTS ======\n")
+            RESU["player_1"] += 1
+    RESU["rate_0"] = RESU["player_0"]/num_games
+    RESU["rate_1"] = RESU["player_1"]/num_games
+    RESU["rate_Match_Nul"] = RESU["Match_Nul"]/num_games
+    RESU["MinCoup"] = np.min(liste1)
+    RESU["MaxCoup"] = np.max(liste1)
+    RESU["MeanCoup"] = np.mean(liste1)
+    print("\n ======RESULTS=====\n")
     print(RESU)
     return RESU
+
 
 
 
@@ -200,5 +186,5 @@ if __name__ == "__main__":
    test_get_next_row()
    test_check_win_from_position_vertical()
    test_find_winning_move()
-   OneGame_SmartVsRandom(render = True)
-   #llGame_SmartVsRandom(10)
+   #OneGame_SmartVsRandom(render = True)
+   AllGame_SmartVsRandom(3)
