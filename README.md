@@ -1,4 +1,4 @@
-# VectorFB
+# Scarface
 Projet python portant sur le jeu Puissance4.
 #############
 #Partie 1:###
