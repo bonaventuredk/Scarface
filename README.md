@@ -111,7 +111,7 @@ Projet python portant sur le jeu Puissance4.
 
 obs['action_mask'] : un tableau de 7 booléens indiquant les colonnes où un jeton peut être joué (True = jouable, False = interdit)
 
-6. "action mask" permet de savoir quelle actions sont légales à ce tour. C'est un tableau.
+6. "action mask" permet de savoir quelles actions sont légales à ce tour. C'est un tableau.
 
 #Tache 2.2
 1. Forme du tableau d'observation: 6 * 7 
@@ -409,9 +409,9 @@ choose_action()
 
 
     
-##Partie 4: Tests
+##Partie 4: Amélioration stratégique
 ##----------
-
+    (Voir fichier smart_agent_ameliore.py)
     
-##Partie 5: Tests
+##Partie 5: Analyse
 ##----------
