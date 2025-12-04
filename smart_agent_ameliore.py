@@ -29,15 +29,18 @@ class SmartAgentAmeliore:
     def choose_action(self, observation, reward=0.0, terminated=False, truncated=False, info=None, action_mask=None):
         """
         Choose an action using advanced rule-based strategy
-
+        
         Strategy priority:
         1. Win immediately
         2. Block opponent from winning
         3. Create double threat
         4. Block opponent double threat
         5. Create forks (multiple threats)
-        6. Prefer center columns with strategic weighting
-        7. Random valid move
+        6. Block opponent forks
+        7. Prefer center columns with strategic weighting
+        8. Random valid move
+        
+           Here we have add 3 rules supplementary
         """
         # Get valid actions
         valid_actions = self._get_valid_actions(action_mask)

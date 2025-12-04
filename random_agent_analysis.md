@@ -1,5 +1,5 @@
-##Tache 2.7: Analyse statistique
-##----------
+## Tache 2.7: Analyse statistique
+
 1. Non les victoires ne sont pas égales entre le joueur 1 et le joueur 2: Le premier joueur gagne 49 fois et le second joueur gagne 50 fois.
 
 2. Le premier coup à un avantage sur le jeu. Le premier joueur prend l'initiative et impose donc des menaces ou met en place des stratégies plus facilement.
