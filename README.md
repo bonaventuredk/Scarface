@@ -193,17 +193,25 @@ Fait
 observation, reward, termination, truncation, info.
 
     -observation["observation"]:un tableau numpy de taille (6,7,2)
+    
     -observation["action_mask"]: un tableau où 1 représente les colonnes jouables et 0 les colonnes non jouables(soit pleines).
+    
     -reward : récompense du dernier coup
     
 2. Détection des coups valides: 
+
 Pour déterminer quelles colonnes sont jouables, on va utiliser action_mask. 
 Si action_mask[i] == 1 avec 0 <= i <= 6, alors la colonne concerné est jouable.
 
 3. Pour choisir un coup plusieurs moyens sont possibles. 
+    
     -On choisit un coup de façon aléatoire parmis les coups légaux
+    
     -On recherche un coup gagnant immédiat
-    -On vérifie si l'adversaire à un coup gagnant et on le bloque si oui
+    
+    -On vérifie si l'adversaire à un coup gagnant et on le bloque 
+    si oui
+    
     -Si aucun des deux précédents, on peut jouer un coup stratégique.
 
 4. Comme sortie, l'agent doit retourner un "int" qui représente la colonne où il veut jouer.
@@ -222,21 +230,10 @@ Ici, l’agent est un peu plus intelligent : il choisit toujours une colonne al�
 Cet agent vérifie d’abord s’il existe un coup qui lui permet de gagner directement (faire un alignement de 4). Si oui, il joue ce coup. Sinon, il retombe sur un choix aléatoire parmi les coups valides.
 
 * Niveau 3 : Agent défensif
-En plus de chercher à gagner immédiatement, cet agent vérifie si l’adversaire pourrait gagner au prochain tour. Si c’est le cas, il bloque cette colonne en priorité. On a donc deux priorités :
-
-gagner soi-même,
-
-empêcher l’adversaire de gagner.
+En plus de chercher à gagner immédiatement, cet agent vérifie si l’adversaire pourrait gagner au prochain tour. Si c’est le cas, il bloque cette colonne en priorité. On a donc deux priorités : gagner soi-même, empêcher l’adversaire de gagner.
 
 * Niveau 4 : Agent positionnel / stratégique
-Cet agent utilise des heuristiques plus avancées, comme :
-
-privilégier les colonnes centrales,
-
-construire des "menaces" (alignements de 2 ou 3),
-
-éviter de jouer des coups qui donnent une victoire facile à l’adversaire.
-Il ne regarde plus seulement les coups immédiats, mais réfléchit au placement global.
+Cet agent utilise des heuristiques plus avancées, comme : privilégier les colonnes centrales, construire des "menaces" (alignements de 2 ou 3), éviter de jouer des coups qui donnent une victoire facile à l’adversaire. Il ne regarde plus seulement les coups immédiats, mais réfléchit au placement global.
 
 * Niveau 5+ : Algorithmes avancés
 À ce niveau, on utilise de vrais algorithmes d’intelligence artificielle.
@@ -245,6 +242,8 @@ Ces agents évaluent plusieurs coups à l’avance et se rapprochent du niveau e
 <a name="tâche-33"></a>
 ### Tâche 3.3
 Squelette de la classe Agent:
+
+
     class Agent:
     def __init__(self, name="GenericAgent", level=0):
         """
