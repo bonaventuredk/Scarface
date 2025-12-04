@@ -1,5 +1,9 @@
 # Scarface
-Projet python portant sur le jeu Puissance4.
+Projet python portant sur le jeu Puissance4 réalisé en binôme.
+
+## Binôme
+- Dohemeto Bonaventure
+- Balakimbiyou Sakiye
 
 ![Description de l'image](images/photo.png)
 
