@@ -8,7 +8,7 @@ Projet python portant sur le jeu Puissance4 réalisé en binôme.
 ![Description de l'image](images/photo.png)
 
 ## Table des matières
-- [Exercice 1: Comprendre le Puissance 4 et le framework Python PettingZoo](#exercice-1-Comprendre le Puissance 4 et le framework Python PettingZoo)
+- [Exercice 1: Comprendre la Puissance 4](#exercice-1-comprendre-la-puissance-4)
   - [Partie 1: Analyse des règles du jeu](#partie-1-analyse-des-règles-du-jeu)
     - [Tâche 1.1 : Analyse des règles du jeu](#tâche-11--analyse-des-règles-du-jeu)
     - [Tâche 1.2 : Analyse des conditions de victoire](#tâche-12--analyse-des-conditions-de-victoire)
@@ -17,7 +17,7 @@ Projet python portant sur le jeu Puissance4 réalisé en binôme.
     - [Tâche 2.2](#tâche-22)
     - [Tâche 2.3](#tâche-23)
     - [Tâche 2.4](#tâche-24)
-    - [Partie 3](#partie-3)
+  - [Partie 3](#partie-3)
     - [Tâche 3.1:](#tâche-31)
     - [Tâche 3.2 Conception d'algorithme](#tâche-32-conception-dalgorithme)
     - [Tâche 3.3](#tâche-33)
