@@ -1,10 +1,56 @@
 # Scarface
 Projet python portant sur le jeu Puissance4.
-#############
-#Partie 1:###
-#############
 
-##Tache 1.1 : Analyse des règles du jeu
+## Table des matières
+- [Partie 1: Analyse des règles du jeu](#partie-1-analyse-des-règles-du-jeu)
+  - [Tâche 1.1 : Analyse des règles du jeu](#tâche-11--analyse-des-règles-du-jeu)
+  - [Tâche 1.2 : Analyse des conditions de victoire](#tâche-12--analyse-des-conditions-de-victoire)
+- [Partie 2](#partie-2)
+  - [Tâche 2.1](#tâche-21)
+  - [Tâche 2.2](#tâche-22)
+  - [Tâche 2.3](#tâche-23)
+  - [Tâche 2.4](#tâche-24)
+- [Partie 3](#partie-3)
+  - [Tâche 3.1:](#tâche-31)
+  - [Tâche 3.2 Conception d'algorithme](#tâche-32-conception-dalgorithme)
+  - [Tâche 3.3](#tâche-33)
+- [Exercice 1: Implémentation d'un agent aléatoire](#exercice-1-implémentation-dun-agent-aléatoire)
+  - [Partie 1: Implémentation](#partie-1-implémentation)
+    - [Tâche 2.1: Agent random_agent.py](#tâche-21-agent-random_agentpy)
+    - [Tâche 2.2: Suite implémentation](#tâche-22-suite-implémentation)
+    - [Tâche 2.3 Implémentation alternative](#tâche-23-implémentation-alternative)
+  - [Partie 2: Tester l'agent](#partie-2-tester-lagent)
+    - [Tâche 2.4: Script de test](#tâche-24-script-de-test)
+    - [Tâche 2.5: Exécution le test](#tâche-25-exécution-le-test)
+    - [Tâche 2.6: Tests pour plusieurs parties](#tâche-26-tests-pour-plusieurs-parties)
+  - [Partie 3: Analyse](#partie-3-analyse)
+    - [Tâche 2.7: Analyse statistique](#tâche-27-analyse-statistique)
+    - [Tâche 2.8: Liste de vérification du code](#tâche-28-liste-de-vérification-du-code)
+  - [Partie 4: Extension](#partie-4-extension)
+    - [Tâche 2.9: Aléatoire pondéré](#tâche-29-aléatoire-pondéré)
+    - [Tâche 2.10: Ajouter des logs](#tâche-210-ajouter-des-logs)
+- [Exercice 3: Implémenter un agent basé sur des règles](#exercice-3-implémenter-un-agent-basé-sur-des-règles)
+  - [Partie 1: Planification](#partie-1-planification)
+    - [Tâche 3.1:](#tâche-31-1)
+    - [Tâche 3.2:](#tâche-32)
+  - [Partie 2: Implémentation de base](#partie-2-implémentation-de-base)
+  - [Partie 3: Tests](#partie-3-tests)
+    - [Tâche 3.5: Tests unitaires](#tâche-35-tests-unitaires)
+    - [Tâche 3.6: Test d'intégration](#tâche-36-test-dintégration)
+  - [Partie 4: Amélioration stratégique](#partie-4-amélioration-stratégique)
+  - [Partie 5: Analyse](#partie-5-analyse)
+- [Exercice 4](#exercice-4)
+  - [Partie 1 : Conception de stratégie de test](#partie-1--conception-de-stratégie-de-test)
+  - [Partie 2 : Implémentation de la stratégie de tests](#partie-2--implémentation-de-la-stratégie-de-tests)
+- [Exercice 5:](#exercice-5)
+
+---
+
+<a name="partie-1-analyse-des-règles-du-jeu"></a>
+## Partie 1: Analyse des règles du jeu
+
+<a name="tâche-11--analyse-des-règles-du-jeu"></a>
+### Tâche 1.1 : Analyse des règles du jeu
 1. Les dimensions d'un tableau de Puissance 4: 6 rangées sur la hauteur et 7 colonnes. Soit 42 emplacements.
 
 2. Un joueur gagne la partie s'il arrive à aligner un 4 jetons consécutifs (au moins) suivant une ligne horizontale, verticale ou suivant les diagonales.
@@ -13,10 +59,10 @@ Projet python portant sur le jeu Puissance4.
 
 4. Non, un joueur ne peut pas placer un pion dans une colonne déjà pleine. Il doit choisir une colonne qui contient au moins une case vide.
 
-5. Les résultats possibles. Soit le Joueur 1 gagne, soit le joueur 2 gagne, soit il y un Match Nul.
+5. Les résultats possibles. Soit le Joueur 1 gagne, soit le joueur 2 gagne, soit il y un Match NUL.
 
-
-##Tache 1.2 : Analyse des conditions de victoire
+<a name="tâche-12--analyse-des-conditions-de-victoire"></a>
+### Tâche 1.2 : Analyse des conditions de victoire
 1. Dessin des 4 motifs:
 
         ------------------------------------
@@ -93,10 +139,12 @@ Projet python portant sur le jeu Puissance4.
                 Tant que la case(courante) existe et contient un élément du joueur, 
                     compteur = compteur + 1
         Sorties: victoire, si compteur >=4  
-        
-##Partie 2
-#Tache 2.1
 
+<a name="partie-2"></a>
+## Partie 2
+
+<a name="tâche-21"></a>
+### Tâche 2.1
 1. Noms des deux agents: player_0 et player_1
 
 2. La variable "action" représente la colonne où le joueur veut déposer son jeton.
@@ -113,20 +161,27 @@ obs['action_mask'] : un tableau de 7 booléens indiquant les colonnes où un jet
 
 6. "action mask" permet de savoir quelles actions sont légales à ce tour. C'est un tableau.
 
-#Tache 2.2
+<a name="tâche-22"></a>
+### Tâche 2.2
 1. Forme du tableau d'observation: 6 * 7 
 
 2. Représentation des dimensions: (6: les lignes du plateau), (7: les colonnes du plateau)
 
 3. Valeurs possibles dans le tableau d'observation: O pour case vide; 1 pion  du joueur actif; 2 pour pion de l'adversaire.
 
-#Tache 2.3
-Fait
-#Tache 2.4
+<a name="tâche-23"></a>
+### Tâche 2.3
 Fait
 
-##Partie 3
-#Tache 3.1: 
+<a name="tâche-24"></a>
+### Tâche 2.4
+Fait
+
+<a name="partie-3"></a>
+## Partie 3
+
+<a name="tâche-31"></a>
+### Tâche 3.1: 
 1. Analyse des entrées: L'agent reçoit les informations suivantes:
 observation, reward, termination, truncation, info.
 
@@ -146,7 +201,8 @@ Si action_mask[i] == 1 avec 0 <= i <= 6, alors la colonne concerné est jouable.
 
 4. Comme sortie, l'agent doit retourner un "int" qui représente la colonne où il veut jouer.
 
-##Tache 3.2 Conception d'algorithme
+<a name="tâche-32-conception-dalgorithme"></a>
+### Tâche 3.2 Conception d'algorithme
 Algoritgme par ordre de complexité:
 1. 
 *Niveau 0 : Agent totalement aléatoire
@@ -179,7 +235,8 @@ Il ne regarde plus seulement les coups immédiats, mais réfléchit au placement
 À ce niveau, on utilise de vrais algorithmes d’intelligence artificielle.
 Ces agents évaluent plusieurs coups à l’avance et se rapprochent du niveau expert.
 
-##Tache 3.3
+<a name="tâche-33"></a>
+### Tâche 3.3
 Squelette de la classe Agent:
     class Agent:
     def __init__(self, name="GenericAgent", level=0):
@@ -291,58 +348,51 @@ Niveau 4 – Agent stratégique (heuristiques)
 
 Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 
-#############
-#Exercie 1:### Implémentation d'un agent aléatoire
-#############
+<a name="exercice-1-implémentation-dun-agent-aléatoire"></a>
+## Exercice 1: Implémentation d'un agent aléatoire
 
-#############
-#Partie 1:### Implémentation
-#############
+<a name="partie-1-implémentation"></a>
+### Partie 1: Implémentation
 
-##Tache 2.1: Agent random_agent.py
-##---------
+<a name="tâche-21-agent-random_agentpy"></a>
+#### Tâche 2.1: Agent random_agent.py
 (Voir fichier random_agent.py)
 
-##Tache 2.2: Suite implémentation
-##---------
+<a name="tâche-22-suite-implémentation"></a>
+#### Tâche 2.2: Suite implémentation
 (Voir fichier random_agent.py)
 
-##Tache 2.3 Implémentation alternative
-##---------
+<a name="tâche-23-implémentation-alternative"></a>
+#### Tâche 2.3 Implémentation alternative
 (Voir fichier random_agent.py)
 
-#############
-#Partie 2:### Tester l'argent
-#############
+<a name="partie-2-tester-lagent"></a>
+### Partie 2: Tester l'agent
 
-##Tache 2.4: Script de test
-##----------
+<a name="tâche-24-script-de-test"></a>
+#### Tâche 2.4: Script de test
 (Voir fichier test_random_agent.py)
 
-##Tache 2.5: Exécution le test
-##----------
+<a name="tâche-25-exécution-le-test"></a>
+#### Tâche 2.5: Exécution le test
 1. Le jeu s'exécute sans erreus.
 2. Oui l'agent fait des coups valides.
 3. Le jeu se termine correctement.
 4. Le nombre de coups est moyennement 14.
 
-##Tache 2.6: Tests pour plusieurs parties
-##----------
-
+<a name="tâche-26-tests-pour-plusieurs-parties"></a>
+#### Tâche 2.6: Tests pour plusieurs parties
 (Voir fichier test_random_agent.py) 
 
-#############
-#Partie 3:### Analyse
-#############
+<a name="partie-3-analyse"></a>
+### Partie 3: Analyse
 
-##Tache 2.7: Analyse statistique
-##----------
-
+<a name="tâche-27-analyse-statistique"></a>
+#### Tâche 2.7: Analyse statistique
 (Voir random_agent_analysis.md)
 
-##Tache 2.8: Liste de vérification du code
-##----------
-
+<a name="tâche-28-liste-de-vérification-du-code"></a>
+#### Tâche 2.8: Liste de vérification du code
  - Oui l'agent gère correctement le masque d'action. 
 
  - Oui le code à une documentation appropriée.
@@ -353,33 +403,29 @@ Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
  
  - (...)
 
-#############
-#Partie 4:### Extension
-#############
+<a name="partie-4-extension"></a>
+### Partie 4: Extension
 
-##Tache 2.9: Aléatoire pondéré
-##----------
-
+<a name="tâche-29-aléatoire-pondéré"></a>
+#### Tâche 2.9: Aléatoire pondéré
 (Voir fichier WeightedRandomAgent.py et TestWeightedRandomAgent.py)
 
-##Tache 2.10: Ajouter des logs
-##----------
-
+<a name="tâche-210-ajouter-des-logs"></a>
+#### Tâche 2.10: Ajouter des logs
 (Voir fichier LogWeightedRandomAgent.py et TestLogWeightedRandomAgent.py)
 
+<a name="exercice-3-implémenter-un-agent-basé-sur-des-règles"></a>
+## Exercice 3: Implémenter un agent basé sur des règles
 
+<a name="partie-1-planification"></a>
+### Partie 1: Planification
 
-##Exercice 3: Implémenter un agent basé sur des règles
-##----------
-
-##Partie 1: Planification
-##----------
-
-# Tache 3.1:
-
+<a name="tâche-31-1"></a>
+#### Tâche 3.1:
 (Fait)
 
-# Tache 3.2:
+<a name="tâche-32"></a>
+#### Tâche 3.2:
 
 choose_action()
     ├── get_valid_actions() - Récupère les colonnes jouables
@@ -387,31 +433,40 @@ choose_action()
     ├── check_blocking_move() - Vérifie si l'adversaire peut gagner au prochain tour
     ├── check_direct_threat() - Vérifie les menaces directes à créer ou bloquer
     └── evaluate_position() - Évalue quel coup est stratégiquement le meilleur
-    
-    
-##Partie 2: Implémentation de base
-##----------
 
+<a name="partie-2-implémentation-de-base"></a>
+### Partie 2: Implémentation de base
 (Voir fichier smart_agent.py)
 
-    
-##Partie 3: Tests
-##----------
+<a name="partie-3-tests"></a>
+### Partie 3: Tests
 
-#Tache 3.5: Tests unitaires
-
+<a name="tâche-35-tests-unitaires"></a>
+#### Tâche 3.5: Tests unitaires
 (Voir fichier test_smart_agent.py)
 
-
-#Tache 3.6: Test d'intégration
-
+<a name="tâche-36-test-dintégration"></a>
+#### Tâche 3.6: Test d'intégration
 (Voir fichier test_smart_agent.py)
 
+<a name="partie-4-amélioration-stratégique"></a>
+### Partie 4: Amélioration stratégique
+(Voir fichier smart_agent_ameliore.py)
 
-    
-##Partie 4: Amélioration stratégique
-##----------
-    (Voir fichier smart_agent_ameliore.py)
-    
-##Partie 5: Analyse
-##----------
+<a name="partie-5-analyse"></a>
+### Partie 5: Analyse
+
+<a name="exercice-4"></a>
+## Exercice 4
+
+<a name="partie-1--conception-de-stratégie-de-test"></a>
+### Partie 1 : Conception de stratégie de test
+(Voir test_plan.md)
+
+<a name="partie-2--implémentation-de-la-stratégie-de-tests"></a>
+### Partie 2 : Implémentation de la stratégie de tests
+(Voir test_suite.py)
+(Voir tournament.py)
+
+<a name="exercice-5"></a>
+## Exercice 5:
