@@ -1,6 +1,8 @@
 # Scarface
 Projet python portant sur le jeu Puissance4.
 
+![Description de l'image](images/photo.png)
+
 ## Table des matières
 - [Partie 1: Analyse des règles du jeu](#partie-1-analyse-des-règles-du-jeu)
   - [Tâche 1.1 : Analyse des règles du jeu](#tâche-11--analyse-des-règles-du-jeu)
