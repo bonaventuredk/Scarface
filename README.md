@@ -294,7 +294,7 @@ Squelette de la classe Agent:
         """
         return f"Agent(name={self.name}, level={self.level})"
         
-#TEXTE DE DECOMPOSITION DU PROBLEME-PLAN DE PROGRESSION D'AGENT
+## TEXTE DE DECOMPOSITION DU PROBLEME-PLAN DE PROGRESSION D'AGENT
 
 Analyse des entrées
     L’agent reçoit à chaque tour une observation de l’environnement, qui contient :
@@ -354,8 +354,8 @@ Niveau 4 – Agent stratégique (heuristiques)
 
 Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 
-<a name="exercice-1-implémentation-dun-agent-aléatoire"></a>
-## Exercice 1: Implémentation d'un agent aléatoire
+<a name="exercice-2-implémentation-dun-agent-aléatoire"></a>
+## Exercice 2: Implémentation d'un agent aléatoire
 
 <a name="partie-1-implémentation"></a>
 ### Partie 1: Implémentation
@@ -396,6 +396,8 @@ Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 <a name="tâche-27-analyse-statistique"></a>
 #### Tâche 2.7: Analyse statistique
 (Voir random_agent_analysis.md)
+[Voir la documentation complète](random_agent_analysis.md)
+
 
 <a name="tâche-28-liste-de-vérification-du-code"></a>
 #### Tâche 2.8: Liste de vérification du code
