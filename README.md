@@ -8,6 +8,7 @@ Projet python portant sur le jeu Puissance4 réalisé en binôme.
 ![Description de l'image](images/photo.png)
 
 ## Table des matières
+- [Exercice 1: Comprendre le Puissance 4 et le framework Python PettingZoo](#exercice-1-Comprendre le Puissance 4 et le framework Python PettingZoo)
 - [Partie 1: Analyse des règles du jeu](#partie-1-analyse-des-règles-du-jeu)
   - [Tâche 1.1 : Analyse des règles du jeu](#tâche-11--analyse-des-règles-du-jeu)
   - [Tâche 1.2 : Analyse des conditions de victoire](#tâche-12--analyse-des-conditions-de-victoire)
@@ -20,7 +21,7 @@ Projet python portant sur le jeu Puissance4 réalisé en binôme.
   - [Tâche 3.1:](#tâche-31)
   - [Tâche 3.2 Conception d'algorithme](#tâche-32-conception-dalgorithme)
   - [Tâche 3.3](#tâche-33)
-- [Exercice 1: Implémentation d'un agent aléatoire](#exercice-1-implémentation-dun-agent-aléatoire)
+- [Exercice 2: Implémentation d'un agent aléatoire](#exercice-2-implémentation-dun-agent-aléatoire)
   - [Partie 1: Implémentation](#partie-1-implémentation)
     - [Tâche 2.1: Agent random_agent.py](#tâche-21-agent-random_agentpy)
     - [Tâche 2.2: Suite implémentation](#tâche-22-suite-implémentation)
