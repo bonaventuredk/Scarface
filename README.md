@@ -436,10 +436,15 @@ Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 #### Tâche 3.2:
 
 choose_action()
+    
     ├── get_valid_actions() - Récupère les colonnes jouables
+
     ├── check_winning_move() - Vérifie si je peux gagner immédiatement
+    
     ├── check_blocking_move() - Vérifie si l'adversaire peut gagner au prochain tour
+    
     ├── check_direct_threat() - Vérifie les menaces directes à créer ou bloquer
+    
     └── evaluate_position() - Évalue quel coup est stratégiquement le meilleur
 
 <a name="partie-2-implémentation-de-base"></a>
