@@ -34,12 +34,10 @@
 
 - Blocage de menace directe adverse: Empêcher l’adversaire de créer une configuration où il aurait une menace de victoire au coup suivant (alignement de trois ouvert).
 
-- Création de double menace: Favoriser les coups qui créent deux menaces de victoire simultanées, forçant l’adversaire à perdre.
-
-- Bloquer plusieurs menaces : si l’adversaire a > 1 menace immédiate (deux colonnes différentes le font gagner), le seul moyen peut être d’avoir un coup qui bloque les deux à la fois — s’il n’existe pas, partie perdue.
 
 #Règles souhaitables:
 
-(A voir)
+- Création de double menace: Favoriser les coups qui créent deux menaces de victoire simultanées, forçant l’adversaire à perdre.
 
+- Bloquer plusieurs menaces : si l’adversaire a > 1 menace immédiate (deux colonnes différentes le font gagner), le seul moyen peut être d’avoir un coup qui bloque les deux à la fois — s’il n’existe pas, partie perdue.
 

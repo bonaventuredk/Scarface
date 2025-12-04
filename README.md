@@ -430,7 +430,8 @@ Niveau 5+ – Agent avancé: Implémente des algorithmes sophistiqués.
 
 <a name="tâche-31-1"></a>
 #### Tâche 3.1:
-(Fait)
+
+[Voir la documentation complète](strategy.md)
 
 <a name="tâche-32"></a>
 #### Tâche 3.2:

@@ -1,30 +1,55 @@
-from pettingzoo.classic import connect_four_v3
-from random_agent import RandomAgent
+"""
+Connect Four simulation module.
+
+This module simulates multiple Connect Four games between two random agents
+and collects statistics about win rates, draws, and move counts.
+"""
+
 import numpy as np
+from pettingzoo.classic import connect_four_v3
 
-def OneGame():  
+# Use absolute import assuming random_agent is in the same directory
+try:
+    from random_agent import RandomAgent
+except ImportError:
+    # For testing purposes only
+    class RandomAgent:
+        """Mock RandomAgent for testing."""
+        def __init__(self, env, player_name=None):
+            self.name = player_name if player_name is not None else "RandomAgent"
+        
+        def choose_action_manual(self, **kwargs):
+            """Mock action selection."""
+            return 0
+
+
+def play_single_game(render_mode=None):
     """
-    Play a single game of Connect Four using two RandomAgent players.
+    Play a single Connect Four game using two RandomAgent players.
 
-    The function creates the environment, resets it, and lets both agents
-    play until the game ends. It prints each move and the final result.
+    Args:
+        render_mode: Optional render mode for visualization.
+                     Options: "human", "rgb_array", or None.
 
     Returns:
-        tuple:
-            - winner (str or None): the name of the winning agent
-              ("player_0", "player_1") or None in case of a draw.
-            - NbCoup (int): total number of moves played in the game.
+        tuple: Contains:
+            - winner (str or None): Name of winning agent ("player_0", "player_1")
+                                    or None in case of a draw.
+            - move_count (int): Total number of moves played in the game.
     """
-    env = connect_four_v3.env(render_mode="human") # ou render_mode="rdb_array" ou bien None
+    env = connect_four_v3.env(render_mode=render_mode)
     env.reset(seed=42)
 
-    agent1 = RandomAgent(env, player_name ="Un")
-    agent2 = RandomAgent(env, player_name ="Deux")
-    assert env.agents == ["player_0", "player_1"] #For after change manually the name of players
-    agentdict = {env.agents[0]: agent1, env.agents[1]: agent2}
-    winner = None
-    NbCoup = 0 # NbCoup: Total number of games
+    # Initialize agents
+    agent1 = RandomAgent(env, player_name="Player_One")
+    agent2 = RandomAgent(env, player_name="Player_Two")
     
+    assert env.agents == ["player_0", "player_1"], "Unexpected agent names"
+    agent_dict = {env.agents[0]: agent1, env.agents[1]: agent2}
+    
+    winner = None
+    move_count = 0
+
     for agent in env.agent_iter():
         observation, reward, terminated, truncated, info = env.last()
 
@@ -37,56 +62,92 @@ def OneGame():
                 print("It's a draw!")
         else:
             # Take a random valid action
-            mask = observation["action_mask"]
-            
-            action = agentdict[agent].choose_action_manual(observation = observation["observation"], reward = reward, terminated = terminated, truncated = truncated, info = info, action_mask = mask)
-            #action = env.action_space(agent).sample(mask)
-            NbCoup += 1
+            action_mask = observation["action_mask"]
+            action = agent_dict[agent].choose_action_manual(
+                observation=observation["observation"],
+                reward=reward,
+                terminated=terminated,
+                truncated=truncated,
+                info=info,
+                action_mask=action_mask
+            )
+            move_count += 1
             print(f"{agent} plays column {action}")
 
         env.step(action)
-    
-    #input("Press Enter to close...")
+
     env.close()
-    return winner, NbCoup
+    return winner, move_count
 
 
-def AllGame(num_games = 10): 
+def simulate_multiple_games(num_games=10):
     """
-    Play multiple games of Connect Four and collect statistics.
+    Simulate multiple Connect Four games and collect statistics.
 
-    Parameters:
-        num_games (int): number of games to play.
+    Args:
+        num_games: Number of games to simulate (default: 10).
 
     Returns:
-        dict: a dictionary with:
-            - number of wins for each player,
-            - number of draws,
-            - win rates,
-            - minimum, maximum, and mean number of moves per game and others
+        dict: Dictionary containing statistics:
+            - player_0_wins: Number of wins for player_0
+            - player_1_wins: Number of wins for player_1
+            - draws: Number of draws
+            - player_0_win_rate: Win rate for player_0
+            - player_1_win_rate: Win rate for player_1
+            - draw_rate: Rate of draws
+            - min_moves: Minimum moves in a game
+            - max_moves: Maximum moves in a game
+            - mean_moves: Average moves per game
     """
-    RESU = {"player_0": 0, "player_1": 0, "Match_Nul": 0, "rate_0":0,"rate_1":0,"rate_Match_Nul":0, "MinCoup":0, "MaxCoup":0, "MeanCoup":0}
-    liste1 = []
-    for i in range(num_games):
-        winner, NbCoup  = OneGame()
-        liste1.append(NbCoup)
+    results = {
+        "player_0_wins": 0,
+        "player_1_wins": 0,
+        "draws": 0,
+        "player_0_win_rate": 0.0,
+        "player_1_win_rate": 0.0,
+        "draw_rate": 0.0,
+        "min_moves": 0,
+        "max_moves": 0,
+        "mean_moves": 0.0
+    }
+    
+    move_counts = []
+
+    for _ in range(num_games):
+        winner, move_count = play_single_game(render_mode=None)
+        move_counts.append(move_count)
+        
         if winner is None:
-            RESU["Match_Nul"] += 1
+            results["draws"] += 1
         elif winner == "player_0":
-            RESU["player_0"] += 1
+            results["player_0_wins"] += 1
         else:
-            RESU["player_1"] += 1
-    RESU["rate_0"] = RESU["player_0"]/num_games
-    RESU["rate_1"] = RESU["player_1"]/num_games
-    RESU["rate_Match_Nul"] = RESU["Match_Nul"]/num_games
-    RESU["MinCoup"] = np.min(liste1)
-    RESU["MaxCoup"] = np.max(liste1)
-    RESU["MeanCoup"] = np.mean(liste1)
-    print("\n ======RESULTS=====\n")
-    print(RESU)
-    return RESU
-            
+            results["player_1_wins"] += 1
+
+    # Calculate rates
+    results["player_0_win_rate"] = results["player_0_wins"] / num_games
+    results["player_1_win_rate"] = results["player_1_wins"] / num_games
+    results["draw_rate"] = results["draws"] / num_games
+    
+    # Calculate move statistics
+    if move_counts:
+        results["min_moves"] = np.min(move_counts)
+        results["max_moves"] = np.max(move_counts)
+        results["mean_moves"] = np.mean(move_counts)
+
+    print("\n" + "="*50)
+    print("RESULTS".center(50))
+    print("="*50)
+    
+    for key, value in results.items():
+        if "rate" in key or "mean" in key:
+            print(f"{key.replace('_', ' ').title()}: {value:.3f}")
+        else:
+            print(f"{key.replace('_', ' ').title()}: {value}")
+    
+    return results
+
 
 if __name__ == "__main__":
-   AllGame(3)
-
+    # Run simulation with a small number of games for demonstration
+    simulate_multiple_games(3)

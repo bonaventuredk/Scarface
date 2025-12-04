@@ -1,7 +1,16 @@
 from pettingzoo.classic import connect_four_v3
 import numpy as np
 
-def print_board(observation):
+def print_board(observation: np.ndarray) -> None:
+    """
+    Print the Connect Four board in a human-readable format.
+
+    Args:
+        observation: A 6x7x2 numpy array representing the game board.
+                     The third dimension contains two channels:
+                     - channel 0: Player 0's pieces
+                     - channel 1: Player 1's pieces
+    """
     for i in range(6):
         row = ""
         for j in range(7):
@@ -12,11 +21,12 @@ def print_board(observation):
             else:
                 row += ". "
         print(row)
-        
-# Test de la fonction
+
+# Initialize environment
 env = connect_four_v3.env()
 env.reset(seed=42)
 
+# Display initial board state
 for agent in env.agent_iter():
     observation, reward, termination, truncation, info = env.last()
 
@@ -24,24 +34,26 @@ for agent in env.agent_iter():
         break
 
     print(f"\nAgent: {agent}")
-    print_board(observation['observation'])
+    print("Initial board:")
+    print_board(observation["observation"])
 
-    # Exemple de coup pour voir le plateau évoluer
+    # Make one move to show board evolution
     env.step(3)
     if agent == env.agents[0]:
         break
-print("Affichage après quelques coups")
+
+# Play several moves to demonstrate board evolution
+print("\nBoard after several moves:")
 env.reset(seed=42)
 
-# Jouons quelques coups avant d'afficher
-env.step(5)  # premier coup
-env.step(2)  # deuxième coup
-env.step(3)  # troisième coup
-env.step(1)  # quatrième coup
-env.step(1)  # cinquième coup
+# Execute a sequence of moves
+moves = [5, 2, 3, 1, 1]
+for move in moves:
+    env.step(move)
 
-# Récupérer l'état actuel
+# Get and display current state
 observation, reward, termination, truncation, info = env.last()
-print_board(observation['observation'])
-env.close()
+print_board(observation["observation"])
 
+# Clean up
+env.close()
