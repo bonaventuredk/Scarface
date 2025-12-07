@@ -9,7 +9,6 @@ from typing import Dict, List, Tuple, Optional
 from random_agent import RandomAgent
 from smart_agent import SmartAgent
 from smart_agent_ameliore import SmartAgentAmeliore
-from WeightedRandomAgent import WeightedRandomAgent
 
 # Import environment
 from pettingzoo.classic import connect_four_v3
@@ -79,6 +78,11 @@ class TestRandomAgent(unittest.TestCase):
     def setUp(self):
         """Set up test environment"""
         self.env = connect_four_v3.env()
+        self.env.reset()
+        # Need to initialize the environment properly before creating agent
+        # First, get the initial observation
+        self.env.reset()
+        _ = next(self.env.agent_iter())
         self.agent = RandomAgent(self.env)
     
     def test_valid_action_selection(self):
@@ -152,6 +156,9 @@ class TestSmartAgent(unittest.TestCase):
     def setUp(self):
         """Set up test environment"""
         self.env = connect_four_v3.env()
+        self.env.reset()
+        # Initialize environment properly
+        _ = next(self.env.agent_iter())
         self.agent = SmartAgent(self.env)
     
     def test_get_valid_actions(self):
@@ -268,6 +275,9 @@ class TestSmartAgentAmeliore(unittest.TestCase):
     def setUp(self):
         """Set up test environment"""
         self.env = connect_four_v3.env()
+        self.env.reset()
+        # Initialize environment properly
+        _ = next(self.env.agent_iter())
         self.agent = SmartAgentAmeliore(self.env)
     
     def test_double_threat_detection(self):
@@ -322,7 +332,10 @@ class TestSmartAgentAmeliore(unittest.TestCase):
         enhanced_time = time.perf_counter() - start_time
         
         # Test basic agent for comparison
-        basic_agent = SmartAgent(self.env)
+        basic_env = connect_four_v3.env()
+        basic_env.reset()
+        _ = next(basic_env.agent_iter())
+        basic_agent = SmartAgent(basic_env)
         start_time = time.perf_counter()
         for _ in range(100):
             basic_agent.choose_action(
@@ -479,6 +492,8 @@ class TestStrategicScenarios(unittest.TestCase):
         # Empty at column 3, row 5
         
         env = connect_four_v3.env()
+        env.reset()
+        _ = next(env.agent_iter())  # Initialize environment
         agent = SmartAgent(env)
         action_mask = np.array([1, 1, 1, 1, 1, 1, 1])
         
@@ -498,6 +513,8 @@ class TestStrategicScenarios(unittest.TestCase):
         # Empty at column 3, row 5
         
         env = connect_four_v3.env()
+        env.reset()
+        _ = next(env.agent_iter())  # Initialize environment
         agent = SmartAgent(env)
         action_mask = np.array([1, 1, 1, 1, 1, 1, 1])
         
@@ -513,6 +530,8 @@ class TestStrategicScenarios(unittest.TestCase):
         board = TestBoardStates.empty_board()
         
         env = connect_four_v3.env()
+        env.reset()
+        _ = next(env.agent_iter())  # Initialize environment
         agent = SmartAgent(env)
         action_mask = np.array([1, 1, 1, 1, 1, 1, 1])
         
