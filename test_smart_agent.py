@@ -1,5 +1,5 @@
 import numpy as np
-from smart_agent import SmartAgent  
+from src.smart_agent import SmartAgent  
 
 from pettingzoo.classic import connect_four_v3
 
