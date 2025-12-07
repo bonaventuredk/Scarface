@@ -1,87 +1,196 @@
-**Attendu** : L’agent préfère la colonne 3 ou les colonnes voisines
+# Plan de test – Agents de jeu (Puissance 4)
 
-## 1.5 Plan de mise en œuvre des tests
+## 1. Objectifs du plan de test
 
-### Phase 1 : Tests unitaires (Semaine 1)
-- Implémenter des classes de tests pour chaque agent
-- Créer des fixtures de test pour des états de plateau courants
-- Tester les méthodes individuelles (_get_valid_actions, _check_win_from_position, etc.)
+L’objectif de ce plan de test est de vérifier que les agents implémentés :
+- respectent strictement les règles du jeu,
+- prennent uniquement des décisions valides,
+- présentent de bonnes performances en temps et en mémoire,
+- adoptent une stratégie cohérente et efficace face à différents adversaires,
+- restent robustes face à des situations limites.
 
-### Phase 2 : Tests d’intégration (Semaine 2)
-- Tester les boucles complètes de jeu
-- Tester les interactions entre agents
-- Vérifier la compatibilité avec l’environnement
+---
 
-### Phase 3 : Tests de performance (Semaine 3)
-- Mettre en place une suite de benchmarking
-- Lancer des tests de charge
-- Profiler l’utilisation mémoire
+## 2. Portée des tests
 
-### Phase 4 : Tests stratégiques (Semaine 4)
-- Exécuter un système de tournoi
-- Analyser les taux de victoire
-- Tester des scénarios stratégiques spécifiques
+Les tests concernent :
+- la sélection des coups,
+- la gestion des fins de partie,
+- la performance algorithmique,
+- la qualité stratégique,
+- la robustesse sur des états spécifiques du plateau.
 
-### Phase 5 : Tests de régression (Continu)
-- Maintenir la suite de tests
-- Ajouter des tests pour les nouvelles fonctionnalités
-- Surveiller les changements de performance
+Les agents testés incluent :
+- RandomAgent
+- SmartAgent
+- SmartAgentAmeliore
+- MinimaxAgent
+---
 
-## 1.6 Outils et infrastructure
+## 3. Stratégie de test
 
-### Frameworks de test
-- **pytest** : Framework de test principal
-- **unittest** : Pour l’organisation des tests
-- **hypothesis** : Pour les tests basés sur des propriétés
+### 3.1 Tests fonctionnels – Que tester ?
 
-### Suivi des performances
-- **pytest-benchmark** : Pour les tests de durée
-- **tracemalloc** : Pour le profilage mémoire
-- **memory-profiler** : Pour l’analyse mémoire détaillée
+Objectif : vérifier que l’agent fonctionne correctement selon les règles du jeu.
 
-### Visualisation
-- **matplotlib** : Pour tracer les taux de victoire et les métriques de performance
-- **seaborn** : Pour les visualisations statistiques
+#### Catégories de tests :
+- Sélection d’un coup valide
+- Respect du masque d’action (colonnes non pleines)
+- Gestion correcte de la fin de partie (victoire, défaite, match nul)
+- Absence d’erreurs ou d’exceptions durant le jeu
+- Stabilité sur des parties complètes
 
-### Intégration continue
-- **GitHub Actions** : Pour les tests automatisés
-- **Couverture du code** : Objectif > 80%
-- **Rapports automatisés** : Génération après chaque exécution
+---
 
-## 1.7 Gestion des risques
+### 3.2 Tests de performance
 
-### Risques courants
-1. **Comportement non déterministe** : Les agents aléatoires provoquent des tests instables  
-   - Atténuation : Utiliser des seeds fixes  
-   - Lancer suffisamment d’itérations pour garantir la validité statistique
+Objectif : mesurer l’efficacité computationnelle des agents.
 
-2. **Variabilité des performances** : La charge système influence les temps de réponse  
-   - Atténuation : Lancer plusieurs benchmarks et utiliser la médiane  
-   - Isoler l’environnement de test
+#### Indicateurs mesurés :
+- Temps moyen de calcul par coup
+- Temps total par partie
+- Utilisation maximale de la mémoire
+- Scalabilité du temps de calcul avec profondeur de recherche
 
-3. **Maintenance des tests** : Les tests se cassent après des modifications du code  
-   - Atténuation : Garder les tests simples et ciblés  
-   - Utiliser l’injection de dépendances pour l’isolation
+---
 
-4. **Conception des tests stratégiques** : Les stratégies complexes sont difficiles à tester  
-   - Atténuation : Cibler des comportements mesurables  
-   - Définir des critères d’acceptation pour les objectifs stratégiques
+### 3.3 Tests stratégiques
 
-## 1.8 Métriques et rapports
+Objectif : vérifier la qualité du jeu produit par l’agent.
 
-### Indicateurs clés de performance (KPI)
-- **Taux de victoire** : Pourcentage de parties gagnées
-- **Vitesse de décision** : Millisecondes par coup
-- **Efficacité mémoire** : Mégaoctets utilisés pendant la partie
-- **Couverture du code** : Pourcentage total de code testé
-- **Taux de réussite des tests** : Pourcentage de tests passant
+#### Éléments évalués :
+- Capacité à gagner contre RandomAgent
+- Capacité à bloquer des menaces évidentes
+- Capacité à détecter une victoire immédiate
+- Performance dans un tournoi multi-agents
+- Stabilité du taux de victoire sur plusieurs parties
 
-### Fréquence des rapports
-- **Quotidien** : Exécutions rapides pendant le développement
-- **Hebdomadaire** : Suite complète + métriques de performance
-- **Mensuel** : Analyse complète avec tendances
+---
 
-### Seuils de réussite
-- **Minimum** : Tous les tests fonctionnels passent
-- **Cible** : >80% de victoire contre un agent aléatoire, <0,1 s par décision
-- **Ambitieux** : >90% de victoire, <0,05 s par décision, >90% de couverture
+## 4. Méthodes de test – Comment tester ?
+
+### 4.1 Tests fonctionnels
+
+- Création d’états de plateau prédéfinis
+- Vérification systématique que l’action renvoyée est légale
+- Utilisation de tests unitaires`
+- Vérification de la terminaison correcte du jeu
+
+---
+
+### 4.2 Tests stratégiques
+
+- Lancer N parties (ex : N = 100 ou 50)
+- Alterner le joueur qui commence
+- Calculer les taux de victoire, défaite et match nul
+- Comparer les agents entre eux dans un tournoi round-robin
+
+---
+
+### 4.3 Tests de performance
+
+- Mesurer le temps avec `time.time()`
+- Mesurer l’usage mémoire avec `tracemalloc`
+- Calculer des moyennes et des maximums
+- Comparer les performances entre agents
+
+---
+
+## 5. Critères de succès
+
+Un agent est considéré comme valide s’il respecte les critères suivants :
+
+### Fonctionnel
+- 100% des coups joués sont légaux
+- 0 exception non gérée sur ≥ 500 parties
+- Détection correcte des fins de partie
+
+### Stratégique
+- > 80% de victoires contre RandomAgent
+- >= 60% de victoires contre SmartAgent
+- Taux de match nul cohérent sur adversaires forts
+- Blocage correct des menaces immédiates
+
+### Performance
+- Temps moyen par coup < 0.1 seconde
+- Temps maximal par coup < 0.5 seconde
+- Utilisation mémoire < 10 MB
+
+---
+
+## 6. Conception de cas de test spécifiques
+
+### Scénario 1 : Victoire immédiate détectée
+
+État du plateau :
+
+. . . . . . . 
+. . . . . . . 
+. . . . . . . 
+. . . . . . . 
+. . . . . . . 
+X X X . . . . 
+
+Attendu : L’agent joue la colonne 3 et gagne immédiatement.
+
+---
+
+### Scénario 2 : Blocage d’une victoire adverse
+
+État du plateau :
+
+. . . . . . . 
+. . . . . . . 
+. . . . . . . 
+. . . . . . . 
+. . . . . . . 
+O O O . . . . 
+
+Attendu : L’agent joue la colonne 3 pour bloquer la victoire.
+
+---
+
+### Scénario 3 : Colonne pleine
+
+État du plateau :
+
+. . . X . . . 
+. . . X . . . 
+. . . X . . . 
+. . . X . . . 
+. . . X . . . 
+O O O X X . .
+
+Attendu : 
+- La colonne 3 est interdite
+- L’agent choisit une autre colonne valide
+
+---
+
+### Scénario 4 : Double menace adverse
+
+État du plateau :
+
+. . . . . . . 
+. . . . . . . 
+. . . . . . . 
+. X O X . . . 
+X O X O . . . 
+O X O X O . . 
+
+Attendu : 
+- L’agent choisit le coup minimisant les risques immédiats
+- Priorité au blocage plutôt qu’à l’attaque (normalement l'agent doit jouer soit dans la colonne 3 ou 5). 
+
+---
+
+### Scénario 5 : Fin de partie – Match nul
+
+État du plateau :
+
+Plateau entièrement rempli sans alignement de 4
+
+Attendu :
+- L’agent reconnaît correctement un match nul
+- Aucun coup supplémentaire n’est joué
+

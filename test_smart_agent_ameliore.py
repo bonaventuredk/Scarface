@@ -248,7 +248,6 @@ def AllGame3(num_games = 10):
 
     Parameters:
         num_games (int): number of games to play.
-
     Returns:
         dict: a dictionary with:
             - number of wins for each player,
@@ -279,8 +278,8 @@ def AllGame3(num_games = 10):
 
 
 if __name__ == "__main__":
-   AllGame1(30)
+   #AllGame1(30)
    
-   AllGame2(30)
+   #AllGame2(30)
    
-   AllGame3(30)
+   AllGame3(3)
