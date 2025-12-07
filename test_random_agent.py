@@ -149,5 +149,5 @@ def simulate_multiple_games(num_games=10):
 
 
 if __name__ == "__main__":
-    # Run simulation with a small number of games for demonstration
+    # Simulation with a small number of games for demonstration
     simulate_multiple_games(1)

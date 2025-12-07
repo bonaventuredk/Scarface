@@ -4,13 +4,15 @@ My Random Agent for Connect Four
 This agent chooses moves randomly from the available (valid) columns.
 """
 
-import random
 
+import random
+from typing import Any
+from typing import Optional
 
 class RandomAgent:
     """A simple agent that plays Connect Four randomly."""
 
-    def __init__(self, env, player_name=None):
+    def __init__(self, env: Any, player_name: Optional[str] = None) -> None:
         """
         Initialize the random agent.
 
@@ -21,8 +23,15 @@ class RandomAgent:
         self.action_space = env.action_space(env.agents[0])
         self.name = player_name if player_name is not None else "RandomAgent"
 
-    def choose_action(self, observation, reward=0.0, terminated=False,
-                      truncated=False, info=None, action_mask=None):
+    def choose_action(
+        self,
+        observation: Any,  # pylint: disable=unused-argument
+        reward: float = 0.0,  # pylint: disable=unused-argument
+        terminated: bool = False,  # pylint: disable=unused-argument
+        truncated: bool = False,  # pylint: disable=unused-argument
+        info: Optional[dict] = None,  # pylint: disable=unused-argument
+        action_mask: Optional[Any] = None,
+    ) -> int:
         """
         Choose a random valid action using the environment's action space.
 
@@ -43,8 +52,15 @@ class RandomAgent:
             action = self.action_space.sample()
         return action
 
-    def choose_action_manual(self, observation, reward=0.0, terminated=False,
-                             truncated=False, info=None, action_mask=None):
+    def choose_action_manual(
+        self,
+        observation: Any,  # pylint: disable=unused-argument
+        reward: float = 0.0,  # pylint: disable=unused-argument
+        terminated: bool = False,  # pylint: disable=unused-argument
+        truncated: bool = False,  # pylint: disable=unused-argument
+        info: Optional[dict] = None,  # pylint: disable=unused-argument
+        action_mask: Optional[Any] = None,
+    ) -> Optional[int]:
         """
         Choose a random valid action without using action_space.sample().
 
@@ -66,7 +82,9 @@ class RandomAgent:
             return self.action_space.sample()
 
         # Get list of valid actions from action_mask
-        valid_actions = [i for i, valid in enumerate(action_mask) if valid == 1]
+        valid_actions = [
+            i for i, valid in enumerate(action_mask) if valid == 1
+        ]
 
         # If no valid actions, return None (shouldn't happen in Connect Four)
         if not valid_actions:
