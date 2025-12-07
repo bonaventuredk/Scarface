@@ -5,6 +5,14 @@ Projet python portant sur le jeu Puissance4 réalisé en binôme.
 - Dohemeto Bonaventure
 - Balakimbiyou Sakiye
 
+## Nom Team sur MLArena
+
+- Scarface
+
+## Fichiers .md supplémentaires:
+
+- Dans le dossier docs/
+
 ![Description de l'image](images/photo.png)
 
 ## Table des matières
@@ -479,8 +487,12 @@ choose_action()
 
 <a name="partie-2--implémentation-de-la-stratégie-de-tests"></a>
 ### Partie 2 : Implémentation de la stratégie de tests
-(Voir test_suite.py)
-(Voir tournament.py)
+
+- (Voir test_suite.py)
+
+- (Voir tournament.py)
 
 <a name="exercice-5"></a>
 ## Exercice 5:
+
+- (Voir agent_minimax.py)
