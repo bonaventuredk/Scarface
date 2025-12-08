@@ -9,6 +9,14 @@ Projet python portant sur le jeu Puissance4 réalisé en binôme.
 
 - Scarface
 
+## Fichiers de tests
+
+- <span style="color:red">Les fichiers de tests sont précédés de test_</span>
+
+- Utiliser python test_....py après l'installation de pettingZoo
+
+
+
 ## Fichiers .md supplémentaires:
 
 - Dans le dossier docs/
