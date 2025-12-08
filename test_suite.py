@@ -1,14 +1,8 @@
-"""
-Complete test plan for Connect Four agents
-Corrected version - Fixes data type issues
-"""
-
 import time
 import tracemalloc
 import numpy as np
 from pettingzoo.classic import connect_four_v3
 
-# Import agents
 from random_agent import RandomAgent
 from smart_agent import SmartAgent
 from smart_agent_ameliore import SmartAgentAmeliore
@@ -16,14 +10,13 @@ from agent_minimax import MinimaxAgent
 
 
 class ConnectFourTester:
-    """Main class to run all tests - Corrected version"""
     
     def __init__(self):
         """Initialize the tester with agents and scenarios"""
         self.env = connect_four_v3.env()
         self.env.reset()
         
-        # Initialize agents with correct names
+       
         self.agents = {
             "RandomAgent": RandomAgent(self.env, "RandomAgent"),
             "SmartAgent": SmartAgent(self.env, "SmartAgent"),
@@ -95,10 +88,10 @@ class ConnectFourTester:
         
         return scenarios
     
-    # === FUNCTIONAL TESTS CORRECTED ===
+    # === FUNCTIONAL TESTS===
     
     def test_scenario(self, agent_name, scenario_name):
-        """Test an agent on a specific scenario - Corrected version"""
+        """Test an agent on a specific scenario """
         agent = self.agents[agent_name]
         scenario = self.test_scenarios[scenario_name]
         
@@ -184,7 +177,7 @@ class ConnectFourTester:
                 results.append(result)
                 
                 # Display result
-                status = "✓" if result["valid"] and result["correct"] else "✗"
+                status = "yes" if result["valid"] and result["correct"] else "no"
                 action_display = result['action'] if result['action'] is not None else "None"
                 print(f"{status} {agent_name:20} | {scenario_name:20} | "
                       f"Action: {action_display:2} | "
@@ -287,14 +280,14 @@ class ConnectFourTester:
             # Check success criteria
             time_ok = stats['average_time'] < 0.1 and stats['max_time'] < 0.5
             
-            print(f"  Criteria: Time {'✓' if time_ok else '✗'}")
+            print(f"  Criteria: Time {'yes' if time_ok else 'no'}")
         
         return results
     
     # === STRATEGIC TESTS ===
     
     def play_single_game(self, agent1, agent2, agent1_name, agent2_name, seed=42):
-        """Play a single game between two agents - Corrected version"""
+        """Play a single game between two agents"""
         env = connect_four_v3.env()
         env.reset(seed=seed)
         
@@ -447,7 +440,7 @@ class ConnectFourTester:
         
         print(f"\n1. FUNCTIONAL CRITERIA")
         print(f"   Valid moves: {valid_moves}/{total_moves}")
-        print(f"   Status: {'✓ SUCCESS' if functional_success else '✗ FAILURE'}")
+        print(f"   Status: {'yes SUCCESS' if functional_success else 'no FAILURE'}")
         
         # Performance criteria
         perf_results = all_results["performance"]
@@ -459,7 +452,7 @@ class ConnectFourTester:
             if not time_ok:
                 perf_success = False
             print(f"   {perf['agent']:20}: "
-                  f"Time {'✓' if time_ok else '✗'} "
+                  f"Time {'yes' if time_ok else 'no'} "
                   f"({perf['average_time']:.6f}s avg, {perf['max_time']:.6f}s max)")
         
         # Strategic criteria - Check that SmartAgentAmeliore beats RandomAgent
@@ -471,7 +464,7 @@ class ConnectFourTester:
         print(f"\n3. STRATEGIC CRITERIA")
         print(f"   SmartAgentAmeliore: {sam_wins} wins")
         print(f"   RandomAgent: {random_wins} wins")
-        print(f"   Status: {'✓ SUCCESS' if strategic_success else '✗ FAILURE'}")
+        print(f"   Status: {'SUCCESS' if strategic_success else 'no FAILURE'}")
         
         # Conclusion
         print("\n" + "=" * 60)
@@ -481,14 +474,11 @@ class ConnectFourTester:
         all_passed = (functional_success and perf_success)
         
         if all_passed:
-            print("✓ FUNCTIONAL AND PERFORMANCE TESTS PASSED")
+            print("FUNCTIONAL AND PERFORMANCE TESTS PASSED")
             print("Agents meet basic criteria.")
         else:
-            print("✗ SOME TESTS FAILED")
+            print("SOME TESTS FAILED")
             print("Please check the details above.")
-
-
-# === MAIN ENTRY POINT ===
 
 if __name__ == "__main__":
     # Create and run the test suite

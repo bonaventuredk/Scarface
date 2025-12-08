@@ -1,45 +1,49 @@
-import numpy as np
-from smart_agent_ameliore import SmartAgentAmeliore 
-from smart_agent import SmartAgent   
-from agent_minimax import MinimaxAgent
+"""
+Tournament
 
+This script runs multiple games between different agents:
+RandomAgent, SmartAgent, SmartAgentAmeliore, and MinimaxAgent.
+"""
+
+import numpy as np
+from random_agent import RandomAgent
+from smart_agent import SmartAgent
+from smart_agent_ameliore import SmartAgentAmeliore
+from agent_minimax import MinimaxAgent
 from pettingzoo.classic import connect_four_v3
 
-from random_agent import RandomAgent
 
-#A tournament of : RandomAgent, SmartAgent and SmartAgentAmeliore
-
-#
-# INTEGRATION TESTS (RANDOM VS SMART_AGENT)
-# 1: RANDOM VS SMART_AGENT
-def OneGame1():  
+def play_one_game(agent1_class, agent2_class, render_mode="human", depth_minimax=3):
     """
-    Play a single game of Connect Four using two RandomAgent players.
+    Play a single game of Connect Four between two agents.
 
-    The function creates the environment, resets it, and lets both agents
-    play until the game ends. It prints each move and the final result.
+    Parameters:
+        agent1_class: class of player 0
+        agent2_class: class of player 1
+        render_mode: str, mode for environment rendering
+        depth_minimax: int, depth for MinimaxAgent if used
 
     Returns:
-        tuple:
-            - winner (str or None): the name of the winning agent
-              ("player_0", "player_1") or None in case of a draw.
-            - NbCoup (int): total number of moves played in the game.
+        tuple: winner (str or None), total number of moves played
     """
-    env = connect_four_v3.env(render_mode="human") # ou render_mode="rdb_array" ou bien None
+    env = connect_four_v3.env(render_mode=render_mode)
     env.reset(seed=42)
-    
-    assert env.agents == ["player_0", "player_1"] #For after change manually the name of players
-    
-    agentdict = {
-        "player_0": RandomAgent(env, "player_0"),
-        "player_1": SmartAgent(env, "player_1")
-    }
+
+    assert env.agents == ["player_0", "player_1"]
+
+    # Initialize agents
+    agent_dict = {}
+    for name, cls in zip(["player_0", "player_1"], [agent1_class, agent2_class]):
+        if cls == MinimaxAgent:
+            agent_dict[name] = cls(env, depth=int(depth_minimax), player_name=name)
+        else:
+            agent_dict[name] = cls(env, name)
+
     winner = None
-    NbCoup = 0 # NbCoup: Total number of games
-    
+    move_count = 0
+
     for agent in env.agent_iter():
         observation, reward, terminated, truncated, info = env.last()
-
         if terminated or truncated:
             action = None
             if reward == 1:
@@ -48,331 +52,75 @@ def OneGame1():
             elif reward == 0:
                 print("It's a draw!")
         else:
-            # Take a random valid action
             mask = observation["action_mask"]
-            
-            action = agentdict[agent].choose_action(observation = observation["observation"], reward = reward, terminated = terminated, truncated = truncated, info = info, action_mask = mask)
-            #action = env.action_space(agent).sample(mask)
-            NbCoup += 1
-            #print(f"{agent} plays column {action}")
+            action = agent_dict[agent].choose_action(
+                observation=observation["observation"],
+                reward=reward,
+                terminated=terminated,
+                truncated=truncated,
+                info=info,
+                action_mask=mask,
+            )
+            move_count += 1
 
         env.step(action)
-    
-    #input("Press Enter to close...")
+
     env.close()
-    return winner, NbCoup
+    return winner, move_count
 
 
-def AllGame1(num_games = 10): 
+def play_multiple_games(agent1_class, agent2_class, num_games=10, render_mode="human", depth_minimax=3):
     """
-    Play multiple games of Connect Four and collect statistics.
+    Play multiple games between two agents and collect statistics.
 
     Parameters:
-        num_games (int): number of games to play.
+        agent1_class: class of player 0
+        agent2_class: class of player 1
+        num_games: int, number of games to play
+        render_mode: str, environment render mode
+        depth_minimax: int, depth for MinimaxAgent if used
 
     Returns:
-        dict: a dictionary with:
-            - number of wins for each player,
-            - number of draws,
-            - win rates,
-            - minimum, maximum, and mean number of moves per game and others
+        dict: statistics including wins, draws, rates, min/max/mean moves
     """
-    RESU = {"player_0": 0, "player_1": 0, "Match_Nul": 0, "rate_0":0,"rate_1":0,"rate_Match_Nul":0, "MinCoup":0, "MaxCoup":0, "MeanCoup":0}
-    liste1 = []
-    for i in range(num_games):
-        winner, NbCoup  = OneGame1()
-        liste1.append(NbCoup)
-        if winner is None:
-            RESU["Match_Nul"] += 1
-        elif winner == "player_0":
-            RESU["player_0"] += 1
-        else:
-            RESU["player_1"] += 1
-    RESU["rate_0"] = RESU["player_0"]/num_games
-    RESU["rate_1"] = RESU["player_1"]/num_games
-    RESU["rate_Match_Nul"] = RESU["Match_Nul"]/num_games
-    RESU["MinCoup"] = np.min(liste1)
-    RESU["MaxCoup"] = np.max(liste1)
-    RESU["MeanCoup"] = np.mean(liste1)
-    print("\n Random vs Smart_Agent\n")
-    print(RESU)
-    return RESU
-            
-
-
-
-# 2. RANDOM VS SMART_AGENT_AMELIORE
-
-def OneGame2():  
-    """
-    Play a single game of Connect Four using two RandomAgent players.
-
-    The function creates the environment, resets it, and lets both agents
-    play until the game ends. It prints each move and the final result.
-
-    Returns:
-        tuple:
-            - winner (str or None): the name of the winning agent
-              ("player_0", "player_1") or None in case of a draw.
-            - NbCoup (int): total number of moves played in the game.
-    """
-    env = connect_four_v3.env(render_mode="human") #
-    env.reset(seed=42)
-
-
-    assert env.agents == ["player_0", "player_1"] #For after change manually the name of players
-    
-    agentdict = {
-        "player_0": RandomAgent(env, "player_0"),
-        "player_1": SmartAgentAmeliore(env, "player_1")
+    results = {
+        "player_0": 0,
+        "player_1": 0,
+        "draw": 0,
+        "rate_0": 0.0,
+        "rate_1": 0.0,
+        "rate_draw": 0.0,
+        "min_moves": 0,
+        "max_moves": 0,
+        "mean_moves": 0.0,
     }
-    winner = None
-    NbCoup = 0 # NbCoup: Total number of games
-    
-    for agent in env.agent_iter():
-        observation, reward, terminated, truncated, info = env.last()
+    moves_list = []
 
-        if terminated or truncated:
-            action = None
-            if reward == 1:
-                print(f"{agent} wins!")
-                winner = agent
-            elif reward == 0:
-                print("It's a draw!")
-        else:
-            # Take a random valid action
-            mask = observation["action_mask"]
-            
-            action = agentdict[agent].choose_action(observation = observation["observation"], reward = reward, terminated = terminated, truncated = truncated, info = info, action_mask = mask)
-            #action = env.action_space(agent).sample(mask)
-            NbCoup += 1
-            #print(f"{agent} plays column {action}")
-
-        env.step(action)
-    
-    #input("Press Enter to close...")
-    env.close()
-    return winner, NbCoup
-
-
-def AllGame2(num_games = 10): 
-    """
-    Play multiple games of Connect Four and collect statistics.
-
-    Parameters:
-        num_games (int): number of games to play.
-
-    Returns:
-        dict: a dictionary with:
-            - number of wins for each player,
-            - number of draws,
-            - win rates,
-            - minimum, maximum, and mean number of moves per game and others
-    """
-    RESU = {"player_0": 0, "player_1": 0, "Match_Nul": 0, "rate_0":0,"rate_1":0,"rate_Match_Nul":0, "MinCoup":0, "MaxCoup":0, "MeanCoup":0}
-    liste1 = []
-    for i in range(num_games):
-        winner, NbCoup  = OneGame2()
-        liste1.append(NbCoup)
+    for _ in range(num_games):
+        winner, moves = play_one_game(agent1_class, agent2_class, render_mode, depth_minimax)
+        moves_list.append(moves)
         if winner is None:
-            RESU["Match_Nul"] += 1
+            results["draw"] += 1
         elif winner == "player_0":
-            RESU["player_0"] += 1
+            results["player_0"] += 1
         else:
-            RESU["player_1"] += 1
-    RESU["rate_0"] = RESU["player_0"]/num_games
-    RESU["rate_1"] = RESU["player_1"]/num_games
-    RESU["rate_Match_Nul"] = RESU["Match_Nul"]/num_games
-    RESU["MinCoup"] = np.min(liste1)
-    RESU["MaxCoup"] = np.max(liste1)
-    RESU["MeanCoup"] = np.mean(liste1)
-    print("\n Random vs Smart_Agent_Ameliore\n")
-    print(RESU)
-    return RESU
+            results["player_1"] += 1
 
-# 3. SMART_AGENT VS SMART_AGENT_AMELIORE
-def OneGame3():  
-    """
-    Play a single game of Connect Four using two RandomAgent players.
+    results["rate_0"] = results["player_0"] / num_games
+    results["rate_1"] = results["player_1"] / num_games
+    results["rate_draw"] = results["draw"] / num_games
+    results["min_moves"] = int(np.min(moves_list))
+    results["max_moves"] = int(np.max(moves_list))
+    results["mean_moves"] = float(np.mean(moves_list))
 
-    The function creates the environment, resets it, and lets both agents
-    play until the game ends. It prints each move and the final result.
-
-    Returns:
-        tuple:
-            - winner (str or None): the name of the winning agent
-              ("player_0", "player_1") or None in case of a draw.
-            - NbCoup (int): total number of moves played in the game.
-    """
-    env = connect_four_v3.env(render_mode="human") # ou render_mode="rdb_array" ou bien None
-    env.reset(seed=42)
-
-
-    assert env.agents == ["player_0", "player_1"] #For after change manually the name of players
-    
-    agentdict = {
-        "player_0": SmartAgent(env, "player_0"),
-        "player_1": SmartAgentAmeliore(env, "player_1")
-    }
-    winner = None
-    NbCoup = 0 # NbCoup: Total number of games
-    
-    for agent in env.agent_iter():
-        observation, reward, terminated, truncated, info = env.last()
-
-        if terminated or truncated:
-            action = None
-            if reward == 1:
-                print(f"{agent} wins!")
-                winner = agent
-            elif reward == 0:
-                print("It's a draw!")
-        else:
-            # Take a random valid action
-            mask = observation["action_mask"]
-            
-            action = agentdict[agent].choose_action(observation = observation["observation"], reward = reward, terminated = terminated, truncated = truncated, info = info, action_mask = mask)
-            #action = env.action_space(agent).sample(mask)
-            NbCoup += 1
-            #print(f"{agent} plays column {action}")
-
-        env.step(action)
-    
-    #input("Press Enter to close...")
-    env.close()
-    return winner, NbCoup
-
-
-def AllGame3(num_games = 10): 
-    """
-    Play multiple games of Connect Four and collect statistics.
-
-    Parameters:
-        num_games (int): number of games to play.
-
-    Returns:
-        dict: a dictionary with:
-            - number of wins for each player,
-            - number of draws,
-            - win rates,
-            - minimum, maximum, and mean number of moves per game and others
-    """
-    RESU = {"player_0": 0, "player_1": 0, "Match_Nul": 0, "rate_0":0,"rate_1":0,"rate_Match_Nul":0, "MinCoup":0, "MaxCoup":0, "MeanCoup":0}
-    liste1 = []
-    for i in range(num_games):
-        winner, NbCoup  = OneGame3()
-        liste1.append(NbCoup)
-        if winner is None:
-            RESU["Match_Nul"] += 1
-        elif winner == "player_0":
-            RESU["player_0"] += 1
-        else:
-            RESU["player_1"] += 1
-    RESU["rate_0"] = RESU["player_0"]/num_games
-    RESU["rate_1"] = RESU["player_1"]/num_games
-    RESU["rate_Match_Nul"] = RESU["Match_Nul"]/num_games
-    RESU["MinCoup"] = np.min(liste1)
-    RESU["MaxCoup"] = np.max(liste1)
-    RESU["MeanCoup"] = np.mean(liste1)
-    print("\nSmart_Agent vs Smart_Agent_Ameliore\n")
-    print(RESU)
-    return RESU
-
-
-# 4.  minimax vs SMART_AGENT_AMELIORE 
-def OneGame4():  
-    """
-    Play a single game of Connect Four using two RandomAgent players.
-
-    The function creates the environment, resets it, and lets both agents
-    play until the game ends. It prints each move and the final result.
-
-    Returns:
-        tuple:
-            - winner (str or None): the name of the winning agent
-              ("player_0", "player_1") or None in case of a draw.
-            - NbCoup (int): total number of moves played in the game.
-    """
-    env = connect_four_v3.env(render_mode="human") # ou render_mode="rdb_array" ou bien None
-    env.reset(seed=42)
-
-
-    assert env.agents == ["player_0", "player_1"] #For after change manually the name of players
-    
-    agentdict = {
-        "player_0": MinimaxAgent(env, "player_0"),
-        "player_1": SmartAgentAmeliore(env, "player_1")
-    }
-    winner = None
-    NbCoup = 0 # NbCoup: Total number of games
-    
-    for agent in env.agent_iter():
-        observation, reward, terminated, truncated, info = env.last()
-
-        if terminated or truncated:
-            action = None
-            if reward == 1:
-                print(f"{agent} wins!")
-                winner = agent
-            elif reward == 0:
-                print("It's a draw!")
-        else:
-            # Take a random valid action
-            mask = observation["action_mask"]
-            
-            action = agentdict[agent].choose_action(observation = observation["observation"], reward = reward, terminated = terminated, truncated = truncated, info = info, action_mask = mask)
-            #action = env.action_space(agent).sample(mask)
-            NbCoup += 1
-            #print(f"{agent} plays column {action}")
-
-        env.step(action)
-    
-    #input("Press Enter to close...")
-    env.close()
-    return winner, NbCoup
-
-
-def AllGame4(num_games = 10): 
-    """
-    Play multiple games of Connect Four and collect statistics.
-
-    Parameters:
-        num_games (int): number of games to play.
-
-    Returns:
-        dict: a dictionary with:
-            - number of wins for each player,
-            - number of draws,
-            - win rates,
-            - minimum, maximum, and mean number of moves per game and others
-    """
-    RESU = {"player_0": 0, "player_1": 0, "Match_Nul": 0, "rate_0":0,"rate_1":0,"rate_Match_Nul":0, "MinCoup":0, "MaxCoup":0, "MeanCoup":0}
-    liste1 = []
-    for i in range(num_games):
-        winner, NbCoup  = OneGame3()
-        liste1.append(NbCoup)
-        if winner is None:
-            RESU["Match_Nul"] += 1
-        elif winner == "player_0":
-            RESU["player_0"] += 1
-        else:
-            RESU["player_1"] += 1
-    RESU["rate_0"] = RESU["player_0"]/num_games
-    RESU["rate_1"] = RESU["player_1"]/num_games
-    RESU["rate_Match_Nul"] = RESU["Match_Nul"]/num_games
-    RESU["MinCoup"] = np.min(liste1)
-    RESU["MaxCoup"] = np.max(liste1)
-    RESU["MeanCoup"] = np.mean(liste1)
-    print("\n Minimax vs Smart_Agent_Ameliore\n")
-    print(RESU)
-    return RESU
+    print(f"\n{agent1_class.__name__} vs {agent2_class.__name__}\n")
+    print(results)
+    return results
 
 
 if __name__ == "__main__":
-   #AllGame1(3)
-   
-   #AllGame2(3)
-   
-   #AllGame3(3)
-
-   AllGame4(10)
+    # Run all matchups
+    play_multiple_games(RandomAgent, SmartAgent, num_games=1)
+    play_multiple_games(RandomAgent, SmartAgentAmeliore, num_games=1)
+    play_multiple_games(SmartAgent, SmartAgentAmeliore, num_games=1)
+    play_multiple_games(MinimaxAgent, SmartAgentAmeliore, num_games=1, depth_minimax=3)
