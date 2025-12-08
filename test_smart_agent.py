@@ -174,7 +174,7 @@ def AllGame_SmartVsRandom(num_games = 10):
     RESU["MinCoup"] = np.min(liste1)
     RESU["MaxCoup"] = np.max(liste1)
     RESU["MeanCoup"] = np.mean(liste1)
-    print("\n ======RESULTS=====\n")
+    print("\n ======RESULTS(Smart_Agent  VS  Random_Agent)=====\n")
     print(RESU)
     return RESU
 
@@ -187,4 +187,4 @@ if __name__ == "__main__":
    test_check_win_from_position_vertical()
    test_find_winning_move()
    #OneGame_SmartVsRandom(render = True)
-   AllGame_SmartVsRandom(3)
+   AllGame_SmartVsRandom(1)
